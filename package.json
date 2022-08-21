@@ -1,0 +1,15 @@
+{
+  "name": "mirror-messages",
+  "version": "1.0.0",
+  "description": "Mirror messages from one guild to another.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Shifts",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^13.10.2"
+  }
+}
