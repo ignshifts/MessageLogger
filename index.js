@@ -32,11 +32,6 @@ if(message.guild == guildM) {
             .setDescription(`${description}`)
             .setColor(color)
             .addFields(
-                {   
-                    name: `${fieldName}`,
-                    value: `${fieldValue}`,
-
-                },
                 {
                     name: 'Author',
                     value: `${message.author.tag}`,
