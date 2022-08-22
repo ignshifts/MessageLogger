@@ -25,7 +25,7 @@ $ npm install
 - [Discord.JS-Selfbot](https://github.com/aiko-chan-ai/discord.js-selfbot-v13)
 
 - Replace `('discord.js')` with `('discord.js-selfbot-v13')`
-- Remove `intents` for the Client Constructor
+- Remove `intents` from the Client Constructor.
 
 **Example**:
 ```js
