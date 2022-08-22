@@ -1,6 +1,6 @@
 # Discord Message Logger
 
-A way to log all messages in a Discord Guild/Server, with a Discord Application or without...
+A way to log all messages in a Discord Guild/Server, with a Discord Application or without a self bot.
 
 # Requirements
 
