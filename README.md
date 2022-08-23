@@ -39,4 +39,4 @@ console.log(`${client.user.tag` has logged in.`)
 
 
 # Plans
-- [ ] [Detect Slash / Interaction Commands]
+- [ ] [Detect Slash / Interaction Commands](https://discord.com/developers/docs/interactions/application-commands)
