@@ -28,21 +28,18 @@ if(message.guild == guildM) {
         avatarURL: message.author.avatarURL(), 
     });
     
+    } else {
+        let content = message.content
+        hook.send({ 
+        content: content,
+        username: message.author.username,
+        avatarURL: message.author.avatarURL(),    
+        });
     }
-} else {
-    let content = message.content;
-    hook.send({ 
-    content: content,
-    username: message.author.username,
-    avatarURL: message.author.avatarURL(),    
-    });
 
-};
+}
+
 });
-
-
-
-
 
 
 
