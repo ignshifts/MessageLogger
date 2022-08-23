@@ -39,4 +39,4 @@ console.log(`${client.user.tag` has logged in.`)
 
 
 # Plans
-- [ ] [Detect Fields for Embeds](https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure)
+- [ ] [Detect Slash / Interaction Commands]
