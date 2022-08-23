@@ -1,6 +1,7 @@
 const Discord = require ('discord.js');
+// const { Client, WebhookClient, MessageEmbed, } = require('discord.js-selfbot-v13');
 const { Client, Attachment, MessageEmbed, Message, Intents, WebhookClient } = require('discord.js');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
 const config = require('./config.json');
 const { token, guildID, webhook } = config;
 
@@ -20,65 +21,29 @@ const hook = new WebhookClient({ url: webhook });
 
 if(message.guild == guildM) {
     if(message.embeds.length > 0) {
-        // If message is a embed,
-        
-        let title = message.embeds[0].title? message.embeds[0].title : 'New Message';
-        let description = message.embeds[0].description? message.embeds[0].description : 'No Description';
-        let color = message.embeds[0].color? message.embeds[0].color : GREEN;
-        const embed = new MessageEmbed()
-            .setTitle(`${title}`)
-            .setDescription(`${description}`)
-            .setColor(color)
-            .addFields(
-                {
-                    name: 'Author',
-                    value: `${message.author.tag}`,
-                },
-                {
-                    name: 'Channel',
-                    value: `${message.channel.name}`,
-                },
-                {
-                    name: 'Sent At',
-                    value: `<t:${Math.round(message.createdAt.getTime() / 1000)}:F>`,
-                }
-            )
-            .setFooter({
-                text: 'This message was sent from a bot.',
-            })
-        hook.send({ embeds: [embed] });
-
-
-
-    } else {
-        // If message is not a embed,
-        const embed = new MessageEmbed()
-        .setTitle(`New Message`)
-        .setDescription(`${message.content}`)
-        .setThumbnail(message.author.displayAvatarURL())
-        .addFields(
-            {
-                name: `Author`,
-                value: `${message.author.tag}`
-            },
-            {
-                name: `Channel`,
-                value: `${message.channel.name}`
-            },
-            {
-                name: `Sent At`,
-                value: `<t:${Math.round(message.createdAt.getTime() / 1000)}:F>`
-            }
-        )
-        
-        .setColor('GREEN');
-        
-        hook.send({
-            embeds: [embed]
-        });  
+        let embedData = message.embeds[0];
+        hook.send({ 
+        embeds: [embedData],
+        username: message.author.username,
+        avatarURL: message.author.avatarURL(), 
+    });
+    
     }
+} else {
+    let content = message.content;
+    hook.send({ 
+    content: content,
+    username: message.author.username,
+    avatarURL: message.author.avatarURL(),    
+    });
+
 };
 });
+
+
+
+
+
 
 
 client.login(token);
