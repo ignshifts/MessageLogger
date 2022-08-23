@@ -29,7 +29,7 @@ $ npm install
 
 **Example**:
 ```js
-const { Client } = require('discord.js-selfbot-v13');
+const { Client, MessageEmbed, WebhookClient } = require('discord.js-selfbot-v13');
 const client = new Client();
 
 client.on('ready', () => {
