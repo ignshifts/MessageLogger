@@ -21,9 +21,7 @@ const hook = new WebhookClient({ url: webhook });
 if(message.guild == guildM) {
     if(message.embeds.length > 0) {
         // If message is a embed,
-
-        console.log(message.embeds[0].fields);
-
+        
         let title = message.embeds[0].title? message.embeds[0].title : 'New Message';
         let description = message.embeds[0].description? message.embeds[0].description : 'No Description';
         let color = message.embeds[0].color? message.embeds[0].color : GREEN;
