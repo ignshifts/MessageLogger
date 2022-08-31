@@ -20,7 +20,16 @@ const hook = new WebhookClient({ url: webhook });
 // hook is a webhook in guildL, the messages from channelM will be sent to this webhook.
 
 if(message.guild == guildM) {
-    if(message.embeds.length > 0) {
+    if(message.attachments.size > 0) {
+        const attachment = message.attachments.first();
+          hook.send({
+            files: [attachment.url],
+            username: message.author.username,
+            avatarURL: message.author.displayAvatarURL(),
+          });
+    }
+
+    else if(message.embeds.length > 0) {
         let embedData = message.embeds[0];
         hook.send({ 
         embeds: [embedData],
