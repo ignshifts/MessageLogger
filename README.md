@@ -33,7 +33,7 @@ const { Client, MessageEmbed, WebhookClient } = require('discord.js-selfbot-v13'
 const client = new Client();
 
 client.on('ready', () => {
-console.log(`${client.user.tag` has logged in.`)
+console.log(`${client.user.tag has logged in.`)
 });
 ```
 
