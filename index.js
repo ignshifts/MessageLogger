@@ -14,10 +14,10 @@ client.on('messageCreate', async (message) => {
 if(message.author.bot === client.user.id) return;
 
 const guildM = client.guilds.cache.get(config['guildID:']);
-// guildM is where the application will retrieve the messages from.
+// guildM is the guild where the application will retrieve the messages from.
 
 const hook = new WebhookClient({ url: webhook });
-// hook is a webhook in guildL, the messages from channelM will be sent to this webhook.
+// hook is a webhook, the messages from guildM will be sent to this webhook.
 
 if(message.guild == guildM) {
     if(message.attachments.size > 0) {
