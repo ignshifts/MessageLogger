@@ -11,7 +11,6 @@ client.on('ready', () => {
 });
 
 client.on('messageCreate', async (message) => {
-    console.log(message)
 if(message.author.bot === client.user.id) return;
 
 const guildM = client.guilds.cache.get(config['guildID:']);
