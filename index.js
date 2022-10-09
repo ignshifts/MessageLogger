@@ -11,6 +11,7 @@ client.on('ready', () => {
 });
 
 client.on('messageCreate', async (message) => {
+    console.log(message)
 if(message.author.bot === client.user.id) return;
 
 const guildM = client.guilds.cache.get(config['guildID:']);
@@ -18,6 +19,7 @@ const guildM = client.guilds.cache.get(config['guildID:']);
 
 const hook = new WebhookClient({ url: webhook });
 // hook is a webhook, the messages from guildM will be sent to this webhook.
+if(message.author.id === hook.id) return;
 
 if(message.guild == guildM) {
     if(message.attachments.size > 0) {
@@ -29,14 +31,30 @@ if(message.guild == guildM) {
           });
     }
 
-    else if(message.embeds.length > 0) {
+    else if(message.embeds.length > 0 && message.interaction != null) {
+        // This will not work as of now, null is being thrown for some reason. API limitation possibility.
+            hook.send({
+                username: message.author.username,
+                embeds: [message.embeds[0], new MessageEmbed().setDescription(`This message is an interaction (slash command). \n Command Name: ${message.interaction.commandName} \n Invoked by: ${message.interaction.user.username}#${message.interaction.user.discriminator}`).setColor('RED')],
+                avatarURL: message.author.displayAvatarURL(),
+                embeds: message.embeds,
+            });
+        
+    } else if (message.embeds.length > 0) {
         let embedData = message.embeds[0];
         hook.send({ 
         embeds: [embedData],
         username: message.author.username,
         avatarURL: message.author.avatarURL(), 
     });
-    
+    } else if (message.interaction != null) {
+        hook.send({ 
+        content: message.content,
+        embeds: [new MessageEmbed().setDescription(`This message is an interaction (slash command). \n Command Name: ${message.interaction.commandName} \n Invoked by: ${message.interaction.user.username}#${message.interaction.user.discriminator}`).setColor('RED')],
+        username: message.author.username,
+        avatarURL: message.author.avatarURL(), 
+    });
+       
     } else {
         let content = message.content
         hook.send({ 
@@ -45,7 +63,6 @@ if(message.guild == guildM) {
         avatarURL: message.author.avatarURL(),    
         });
     }
-
 }
 
 });
