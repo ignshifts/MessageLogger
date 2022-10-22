@@ -40,4 +40,4 @@ console.log(`${client.user.tag has logged in.`)
 
 # Plans
 - [x] [Detect Slash / Interaction Commands](https://discord.com/developers/docs/interactions/application-commands)
-- [] [Add Support for Forums](https://discord.com/developers/docs/topics/threads#forums)
+- [ ] [Add Support for Forums](https://discord.com/developers/docs/topics/threads#forums)
