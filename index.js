@@ -7,7 +7,7 @@ const { token, guildID, webhook } = config;
 
 if(!config.token) return console.log('No token provided.');
 if(!config["guildID:"]) return console.log('No guildID provided.');
-if(config.webhook) return console.log('No webhook provided.');
+if(!config.webhook) return console.log('No webhook provided.');
 
 client.on('ready', () => {
     console.log(`${client.user.tag} has logged in!`)
