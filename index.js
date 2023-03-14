@@ -1,7 +1,5 @@
-const Discord = require ('discord.js');
-// const { Client, WebhookClient, MessageEmbed, } = require('discord.js-selfbot-v13');
-const { Client, Attachment, MessageEmbed, Message, Intents, WebhookClient } = require('discord.js');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
+const { Client, WebhookClient, MessageEmbed, Attachment, Message } = require('discord.js-selfbot-v13');
+const client = new Client({ checkUpdate: false });
 const config = require('./config.json');
 const { token, guildID, webhook } = config;
 
