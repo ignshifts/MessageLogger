@@ -1,0 +1,16 @@
+{
+  "name": "messagelogger",
+  "version": "2.0",
+  "description": "Log content in a Discord Server.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "Shifts",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^13.10.2"
+  }
+}
