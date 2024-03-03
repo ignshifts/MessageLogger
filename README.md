@@ -11,7 +11,7 @@
 
 ##  Usage:
 ```
-  * node . OR node index.js *
+  * npm start OR node index.js *
 ```
 
 ![image](https://github.com/ignshifts/MessageLogger/assets/74390871/176aaa61-369c-445a-8dd5-8d25a3c2fb25) Enable Message Content Intent
