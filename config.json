@@ -1,5 +1,13 @@
 {
-    "token": "",
-    "webhook": "",
-    "channels": [""]
-  }
+  "token": "",
+      "channels": [
+    {
+      "id": "",
+      "webhook": ""
+    },
+    {
+      "id": "",
+      "webhook": ""
+    }
+  ]
+}
