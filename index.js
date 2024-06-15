@@ -1,74 +1,64 @@
-const { Client, Attachment, MessageEmbed, Message, Intents, WebhookClient } = require('discord.js');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
+const { Client, Intents, WebhookClient, MessageEmbed } = require('discord.js');
 const config = require('./config.json');
 
-if(!config.token) return console.log('No token provided.');
-if(!config.webhook) return console.log('No webhook provided.');
-if(config.channels.length < 1) return console.log('No channels provided.');
+if (!config.token) return console.log('No token provided.');
+if (!config.webhook) return console.log('No webhook provided.');
+if (config.channels.length < 1) return console.log('No channels provided.');
 
-client.on('ready', () => {
-    console.log(`${client.user.tag} has logged in!`)
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+
+client.once('ready', () => {
+    console.log(`${client.user.tag} has logged in!`);
 });
 
 client.on('messageCreate', async (message) => {
-if(message.author.bot === client.user.id) return;
+    const hook = new WebhookClient({ url: config.webhook });
 
-const hook = new WebhookClient({ url: config.webhook });
-// hook is a webhook, the messages from guildM will be sent to this webhook.
-
-if(message.author.id === hook.id) return;
-
-if(config.channels.includes(message.channel.id)) {
-
-    // Images - Attachments
-    if(message.attachments.size > 0) {
-        const attachment = message.attachments.first();
-          hook.send({
-            files: [attachment.url],
+    // Function to send a message via webhook
+    const sendWebhookMessage = (content, embeds = [], files = []) => {
+        if (!content && embeds.length === 0 && files.length === 0) return; // Prevent sending empty messages
+        hook.send({
+            content: content || undefined,
+            embeds,
+            files,
             username: message.author.username,
             avatarURL: message.author.displayAvatarURL(),
-          });
-    }
-    
-    // Interactions (Slashies) that return embeds
-    else if(message.embeds.length > 0 && message.interaction != null) {
-        // This will not work as of now, null is being thrown for some reason. API limitation possibility.
-            hook.send({
-                username: message.author.username,
-                embeds: [message.embeds[0], new MessageEmbed().setDescription(`This message is an interaction (slash command). \n Command Name: ${message.interaction.commandName} \n Invoked by: ${message.interaction.user.username}#${message.interaction.user.discriminator}`).setColor('RED')],
-                avatarURL: message.author.displayAvatarURL(),
-                embeds: message.embeds,
-            });
-        
-            // Embeds
-    } else if (message.embeds.length > 0) {
-        let embedData = message.embeds[0];
-        hook.send({ 
-        embeds: [embedData],
-        username: message.author.username,
-        avatarURL: message.author.avatarURL(), 
-    });
+        }).catch(error => console.error('Error sending webhook message:', error));
+    };
 
-    // Interactions (Slashies)
-    } else if (message.interaction != null) {
-        hook.send({ 
-        content: message.content,
-        embeds: [new MessageEmbed().setDescription(`This message is an interaction (slash command). \n Command Name: ${message.interaction.commandName} \n Invoked by: ${message.interaction.user.username}#${message.interaction.user.discriminator}`).setColor('RED')],
-        username: message.author.username,
-        avatarURL: message.author.avatarURL(), 
-    });
-       
-    } else {
+    // Check if the message is in the configured channels
+    if (!config.channels.includes(message.channel.id)) return;
 
-        // Raw Messages
-        let content = message.content
-        hook.send({ 
-        content: content,
-        username: message.author.username,
-        avatarURL: message.author.avatarURL(),    
-        });
+    // Allow bot messages if they are interactions
+    if (!message.interaction && message.author.bot) return;
+
+    // Handle Slash Commands
+    if (message.interaction) {
+        const embed = new MessageEmbed()
+            .setDescription(`This message is an interaction (slash command). \n Command Name: ${message.interaction.commandName} \n Invoked by: ${message.interaction.user.username}#${message.interaction.user.discriminator}`)
+            .setColor('RED');
+        sendWebhookMessage(message.content, [embed]);
     }
-}
+    // Handle Attachments (Images)
+    else if (message.attachments.size > 0) {
+        const attachments = message.attachments.map(attachment => attachment.url);
+        sendWebhookMessage(message.content || null, [], attachments);
+    }
+    // Handle Embeds
+    else if (message.embeds.length > 0) {
+        const embedData = message.embeds[0];
+        sendWebhookMessage(message.content || null, [embedData]);
+    }
+    // Handle Stickers & Emojis
+    else if (message.stickers.size > 0 || message.content.match(/<:\w+:\d+>/)) {
+        const stickers = message.stickers.map(sticker => `Sticker: ${sticker.name}`).join('\n');
+        const emojis = message.content.match(/<:\w+:\d+>/g) ? message.content.match(/<:\w+:\d+>/g).map(emoji => `Emoji: ${emoji}`).join('\n') : '';
+        sendWebhookMessage(`${message.content}\n${stickers}\n${emojis}`);
+    }
+    // Handle Plain Messages
+    else {
+        sendWebhookMessage(message.content);
+    }
 });
 
 client.login(config.token);
