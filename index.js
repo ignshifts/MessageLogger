@@ -14,10 +14,8 @@ client.on('messageCreate', async (message) => {
     // Find the appropriate channel configuration
     const channelConfig = config.channels.find(c => c.id === message.channel.id);
     
-    if (!channelConfig || !channelConfig.webhook) {
-        console.log(`No webhook configured for channel ${message.channel.id}`);
-        return;
-    }
+    if (!channelConfig || !channelConfig.webhook) return;
+    
 
     const hook = new WebhookClient({ url: channelConfig.webhook });
 
@@ -33,11 +31,9 @@ client.on('messageCreate', async (message) => {
         }).catch(error => console.error('Error sending webhook message:', error));
     };
 
-    // Allow bot messages if they are interactions
-    if (!message.interaction && message.author.bot) return;
-
+    
     // Handle Slash Commands
-    if (message.interaction) {
+    if (message.interaction && message.author.bot) {
         const embed = new MessageEmbed()
             .setDescription(`This message is an interaction (slash command). \n Command Name: ${message.interaction.commandName} \n Invoked by: ${message.interaction.user.username}#${message.interaction.user.discriminator}`)
             .setColor('RED');
