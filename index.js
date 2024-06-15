@@ -38,7 +38,6 @@ client.on('messageCreate', async (message) => {
 
     // Handle Slash Commands
     if (message.interaction) {
-        console.log('Handling slash command');
         const embed = new MessageEmbed()
             .setDescription(`This message is an interaction (slash command). \n Command Name: ${message.interaction.commandName} \n Invoked by: ${message.interaction.user.username}#${message.interaction.user.discriminator}`)
             .setColor('RED');
