@@ -2,8 +2,7 @@ const { Client, Intents, WebhookClient, MessageEmbed } = require('discord.js');
 const config = require('./config.json');
 
 if (!config.token) return console.log('No token provided.');
-if (!config.webhook) return console.log('No webhook provided.');
-if (config.channels.length < 1) return console.log('No channels provided.');
+if (!config.channels || config.channels.length < 1) return console.log('No channels provided.');
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
@@ -12,7 +11,13 @@ client.once('ready', () => {
 });
 
 client.on('messageCreate', async (message) => {
-    const hook = new WebhookClient({ url: config.webhook });
+    // Find the appropriate channel configuration
+    const channelConfig = config.channels.find(c => c.id === message.channel.id);
+    
+    if (!channelConfig || !channelConfig.webhook) return;
+    
+
+    const hook = new WebhookClient({ url: channelConfig.webhook });
 
     // Function to send a message via webhook
     const sendWebhookMessage = (content, embeds = [], files = []) => {
@@ -26,14 +31,9 @@ client.on('messageCreate', async (message) => {
         }).catch(error => console.error('Error sending webhook message:', error));
     };
 
-    // Check if the message is in the configured channels
-    if (!config.channels.includes(message.channel.id)) return;
-
-    // Allow bot messages if they are interactions
-    if (!message.interaction && message.author.bot) return;
-
+    
     // Handle Slash Commands
-    if (message.interaction) {
+    if (message.interaction && message.author.bot) {
         const embed = new MessageEmbed()
             .setDescription(`This message is an interaction (slash command). \n Command Name: ${message.interaction.commandName} \n Invoked by: ${message.interaction.user.username}#${message.interaction.user.discriminator}`)
             .setColor('RED');
