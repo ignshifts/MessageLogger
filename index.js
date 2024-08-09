@@ -1,11 +1,11 @@
 const { Client, Intents, WebhookClient, MessageEmbed } = require('discord.js');
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+
 const config = require('./config.json');
 
 if (!config.token) return console.log('No token provided.');
 if (!config.webhook) return console.log('No webhook provided.');
 if (config.channels.length < 1) return console.log('No channels provided.');
-
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
 client.once('ready', () => {
     console.log(`${client.user.tag} has logged in!`);
